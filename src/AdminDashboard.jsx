@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
-import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  doc,
+  updateDoc,
+  onSnapshot,
+} from "firebase/firestore";
 import { signOut } from "firebase/auth";
 import { db, auth } from "./firebase/config";
 
@@ -20,6 +26,12 @@ function AdminDashboard() {
     setUsers(userList);
   };
 
+  const [stats, setStats] = useState({
+    total: 0,
+    processing: 0,
+    completed: 0,
+  });
+
   useEffect(() => {
     fetchUsers();
   }, []);
@@ -35,9 +47,44 @@ function AdminDashboard() {
     }
   };
 
+  useEffect(() => {
+    const unsubscribe = onSnapshot(collection(db, "textiles"), (snapshot) => {
+      const list = snapshot.docs.map((doc) => doc.data());
+
+      const total = list.length;
+      const processing = list.filter(
+        (item) => item.status === "Processing",
+      ).length;
+      const completed = list.filter(
+        (item) => item.status === "Completed",
+      ).length;
+
+      setStats({ total, processing, completed });
+    });
+
+    return () => unsubscribe();
+  }, []);
+
   return (
     <div style={{ padding: 40 }}>
       <h1>Admin Dashboard</h1>
+
+      <div style={{ display: "flex", gap: 20, marginTop: 20 }}>
+        <div style={{ border: "1px solid #ccc", padding: 20, borderRadius: 8 }}>
+          <h3>Total Textiles</h3>
+          <p>{stats.total}</p>
+        </div>
+
+        <div style={{ border: "1px solid #ccc", padding: 20, borderRadius: 8 }}>
+          <h3>Processing</h3>
+          <p>{stats.processing}</p>
+        </div>
+
+        <div style={{ border: "1px solid #ccc", padding: 20, borderRadius: 8 }}>
+          <h3>Completed</h3>
+          <p>{stats.completed}</p>
+        </div>
+      </div>
 
       {/* ACTION BUTTONS */}
       <div style={{ marginBottom: 20 }}>

@@ -42,6 +42,19 @@ function App() {
 
   if (loading) return <h2>Loading...</h2>;
 
+
+  console.log({
+  Login,
+  UserDashboard,
+  AdminDashboard,
+  TextileDashboard,
+  HomePage,
+  ProductsPage,
+  CartPage,
+  Checkout,
+  OrdersPage,
+  ProfilePage
+});
   return (
     <CartProvider>
       <BrowserRouter>

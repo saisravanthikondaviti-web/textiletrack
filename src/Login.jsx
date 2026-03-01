@@ -1,71 +1,95 @@
 import { useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+} from "firebase/auth";
 import { auth, db } from "./firebase/config";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc } from "firebase/firestore";
+import "./styles.css";
 
 function Login() {
+  const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleLogin = async () => {
+  const handleAuth = async () => {
+    if (!email || !password) {
+      alert("Please fill all fields");
+      return;
+    }
+
     try {
-      // Sign in user
-      const res = await signInWithEmailAndPassword(auth, email, password);
+      setLoading(true);
 
-      // Get user role from Firestore
-      const userRef = doc(db, "users", res.user.uid);
-      const userSnap = await getDoc(userRef);
+      if (isLogin) {
+        // LOGIN
+        const res = await signInWithEmailAndPassword(auth, email, password);
 
-      if (userSnap.exists()) {
-        const role = userSnap.data().role;
+        const userRef = doc(db, "users", res.user.uid);
+        const snap = await getDoc(userRef);
 
-        if (role === "admin") {
-          window.location.href = "/admin";
+        if (snap.exists()) {
+          const role = snap.data().role;
+          window.location.href = role === "admin" ? "/admin" : "/user";
         } else {
-          window.location.href = "/user";
+          alert("User role not found.");
         }
       } else {
-        alert("User role not found. Contact admin.");
+        // SIGNUP
+        const res = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+
+        // Save role as user
+        await setDoc(doc(db, "users", res.user.uid), {
+          email,
+          role: "user",
+          createdAt: new Date(),
+        });
+
+        alert("Account created successfully! Please login.");
+        setIsLogin(true);
       }
-    } catch (error) {
-      alert(error.message);
+    } catch (err) {
+      alert(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div style={{ padding: 40 }}>
-      <h2>Login</h2>
+    <div className="auth-wrapper">
+      <div className="auth-box">
+        <h2>{isLogin ? "Welcome Back 👋" : "Create Account 🚀"}</h2>
 
-      <input
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        style={{ padding: 8, width: 250, marginBottom: 10 }}
-      />
-      <br />
+        <input
+          type="email"
+          placeholder="Enter Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
 
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        style={{ padding: 8, width: 250, marginBottom: 10 }}
-      />
-      <br />
+        <input
+          type="password"
+          placeholder="Enter Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
 
-      <button
-        onClick={handleLogin}
-        style={{
-          padding: "8px 20px",
-          backgroundColor: "#4a90e2",
-          color: "white",
-          border: "none",
-          borderRadius: 6,
-          cursor: "pointer",
-        }}
-      >
-        Login
-      </button>
+        <button onClick={handleAuth} disabled={loading}>
+          {loading ? "Please wait..." : isLogin ? "Login" : "Sign Up"}
+        </button>
+
+        <p className="auth-toggle">
+          {isLogin ? "Don't have an account?" : "Already have an account?"}
+          <span onClick={() => setIsLogin(!isLogin)}>
+            {isLogin ? " Sign Up" : " Login"}
+          </span>
+        </p>
+      </div>
     </div>
   );
 }

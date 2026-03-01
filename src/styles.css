@@ -785,95 +785,90 @@ body, html {
 }
 
 
-/* About Section */
+/* ==========================
+   ABOUT SECTION - SIMPLE FLEX
+========================== */
 .about-section {
-  padding: 80px 20px;
-  text-align: center;
+  padding: 100px 20px;
+  background: #0f2027;
+  color: white;
 }
 
-.about-section h2 {
-  font-size: 2.5rem;
-  margin-bottom: 40px;
-}
-
-.about-cards {
+.about-container {
+  max-width: 1100px;
+  margin: 0 auto;
   display: flex;
-  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 50px;
+}
+
+/* text side */
+.about-text {
+  flex: 1;
+}
+
+.about-text h2 {
+  font-size: 2.4rem;
+  margin-bottom: 16px;
+}
+
+.about-text p {
+  color: #d6d6d6;
+  line-height: 1.7;
+  margin-bottom: 12px;
+}
+
+/* image side */
+.about-image {
+  flex: 1;
+  display: flex;
   justify-content: center;
-  gap: 20px;
 }
 
-.glass-card {
-  width: 280px;
-  padding: 20px;
-  border-radius: 15px;
-  background: rgba(255,255,255,0.05);
-  backdrop-filter: blur(10px);
-  transition: 0.3s;
+.about-image img {
+  width: 100%;
+  max-width: 420px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 }
 
-.glass-card:hover {
-  background: rgba(255,255,255,0.1);
-}
-
-.glass-card h3 {
-  margin-bottom: 15px;
-}
-
-.glass-card p {
-  color: #ccc;
-}
-
-/* Featured Section */
+/* FEATURED SECTION */
 .featured-section {
-  padding: 80px 20px;
+  padding: 90px 20px;
   text-align: center;
-}
-
-.featured-section h2 {
-  font-size: 2.5rem;
-  margin-bottom: 40px;
 }
 
 .featured-cards {
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
-  gap: 20px;
+  gap: 35px;
+  flex-wrap: wrap;
+}
+
+.featured-card {
+  width: 230px;
+  padding: 18px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
 }
 
 .featured-card img {
-  border-radius: 10px;
   width: 100%;
-  height: 150px;
-  object-fit: cover;
-}
-
-.featured-card h4 {
-  margin: 10px 0 5px;
-}
-
-.featured-card p {
-  color: #ccc;
-  font-size: 0.9rem;
+  border-radius: 12px;
 }
 
 .view-btn {
-  padding: 8px 12px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: bold;
-  margin-top: 5px;
-  transition: 0.3s;
+  margin-top: 12px;
+  display: inline-block;
+  padding: 8px 16px;
+  background: #007bff;
+  color: white;
+  border-radius: 6px;
+  text-decoration: none;
 }
-
-.view-btn:hover {
-  background-color: #0056b3;
-}
-
 /* FAQ Section */
 .faq-section {
   padding: 80px 20px;
@@ -916,54 +911,64 @@ body, html {
   color: #ccc;
 }
 
-/* Contact Section */
+/* ==========================
+   CONTACT SECTION - STACKED
+========================== */
 .contact-section {
-  padding: 80px 20px;
+  padding: 90px 20px;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  color: white;
   text-align: center;
 }
 
 .contact-section h2 {
-  font-size: 2.5rem;
-  margin-bottom: 40px;
+  font-size: 2.4rem;
+  margin-bottom: 8px;
 }
 
-.contact-cards {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
+.contact-subtitle {
+  color: #d6d6d6;
+  margin-bottom: 45px;
 }
 
-.contact-card {
-  width: 220px;
-  padding: 30px 20px;
-  border-radius: 20px;
-  background: rgba(255,255,255,0.05);
-  backdrop-filter: blur(15px);
+/* stacked list */
+.contact-list {
+  max-width: 800px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
+  gap: 18px;
+}
+
+/* each row */
+.contact-row {
+  display: flex;
   align-items: center;
-  transition: 0.3s;
-  cursor: pointer;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+  gap: 18px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(18px);
+  border-radius: 16px;
+  padding: 22px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+  transition: 0.3s ease;
 }
 
-.contact-card:hover {
-  background: rgba(255,255,255,0.1);
+.contact-row:hover {
+  transform: translateY(-4px);
+  background: rgba(255, 255, 255, 0.12);
 }
 
-.contact-card i {
-  font-size: 2rem;
-  margin-bottom: 10px;
-  color: #007bff;
+.contact-row .icon {
+  font-size: 2.2rem;
 }
 
-.contact-card h3 {
-  margin-bottom: 10px;
+.contact-row h3 {
+  margin: 0;
 }
 
-.contact-card p {
-  color: #ccc;
+.contact-row p {
+  margin: 4px 0 0;
+  color: #dcdcdc;
 }
 
 .navbar {
@@ -993,7 +998,7 @@ body, html {
 
 .nav-links a:hover,
 .nav-links a.active {
-  color: #007bff;
+  color: #007bfff5;
 }
 
 /* Products Page: Homepage Style */

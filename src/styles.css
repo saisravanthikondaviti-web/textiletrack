@@ -1570,3 +1570,99 @@ body, html {
 
 /* Glass cards already have frosted glass effect, no changes needed */
 
+/* Login Page Container */
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-image: url('https://t3.ftcdn.net/jpg/18/61/98/80/360_F_1861988049_12Haq9xWVlz0kba1ywsrqhhFcZOUEFA1.jpg');
+  background-size: cover;
+  background-position: center;
+  padding: 20px;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* Glass effect wrapper */
+.login-wrapper {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(35px);
+  border-radius: 20px;
+  padding: 40px 30px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  color: #fff;
+  text-align: center;
+
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* spacing between items */
+}
+
+/* Title */
+.login-title {
+  margin-bottom: 10px;
+  font-size: 1.8rem;
+}
+
+/* Input fields */
+.input-group {
+  width: 93%;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  transition: 0.3s;
+}
+
+.input-group input::placeholder {
+  color: rgba(255,255,255,0.7);
+}
+
+.input-group input:focus {
+  background: rgba(255,255,255,0.2);
+}
+
+/* Auth button */
+.auth-btn {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: none;
+  background: #111c92;
+  color: #fff;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.auth-btn:hover {
+  background: #29097a;
+}
+
+/* Toggle login/signup */
+.auth-toggle {
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.8);
+  margin-top: 10px;
+}
+
+.auth-toggle span {
+  color: #111c92;
+  cursor: pointer;
+  margin-left: 5px;
+  font-weight: bold;
+}
+
+.auth-toggle span:hover {
+  color: #29097a;
+}

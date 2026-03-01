@@ -82,7 +82,13 @@ export default function HomePage() {
               <img src={textile.image} alt={textile.name} />
               <h4>{textile.name}</h4>
               <p>Authentic, traditional Indian textile</p>
-              <button className="view-btn">View</button>
+              {/* Pass the textile name/type as query parameter */}
+              <Link
+                to={`/user/products?type=${encodeURIComponent(textile.name.split(" ")[0])}`}
+                className="view-btn"
+              >
+                View
+              </Link>
             </div>
           ))}
         </div>
@@ -101,13 +107,15 @@ export default function HomePage() {
           <div className="faq-card">
             <h3>Do you deliver nationwide?</h3>
             <p>
-              Yes! We deliver authentic Indian textiles across all states in India.
+              Yes! We deliver authentic Indian textiles across all states in
+              India.
             </p>
           </div>
           <div className="faq-card">
             <h3>Are the textiles authentic?</h3>
             <p>
-              All our products are sourced directly from certified local artisans and weavers.
+              All our products are sourced directly from certified local
+              artisans and weavers.
             </p>
           </div>
         </div>

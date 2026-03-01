@@ -751,13 +751,13 @@ body, html {
   justify-content: center;
   align-items: center;
   text-align: center;
-  background: url('https://static.vecteezy.com/system/resources/thumbnails/032/467/269/small/close-up-shots-illuminating-the-complex-beauty-of-various-woven-textiles-photo.jpg') no-repeat center center/cover;
+  background: url('https://thumbs.dreamstime.com/b/red-fabric-cloth-texture-background-detail-textile-material-close-up-133929668.jpg') no-repeat center center/cover;
 }
 
 .hero-overlay {
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.5); /* dark overlay for readability */
+  /* background: rgba(0,0,0,0.5); dark overlay for readability */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -768,7 +768,7 @@ body, html {
   background: rgba(255,255,255,0.05);
   padding: 50px 30px;
   border-radius: 20px;
-  backdrop-filter: blur(15px);
+  backdrop-filter: blur(5px);
   max-width: 700px;
 }
 
@@ -1342,3 +1342,231 @@ body, html {
   cursor: pointer;
   font-weight: 600;
 }
+
+.product-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.product-link img {
+  border-radius: 12px;
+  transition: transform 0.2s;
+}
+
+.product-link:hover img {
+  transform: scale(1.04);
+}
+
+/* Filter bar */
+.filter-bar {
+  margin: 20px 0;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.filter-btn {
+  padding: 8px 16px;
+  border: none;
+  background-color: #eee;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: 0.2s;
+}
+.filter-btn:hover {
+  background-color: #ddd;
+}
+.active-filter {
+  background-color: #4caf50;
+  color: white;
+}
+
+/* Card buttons */
+.card-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* Modal styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+}
+.modal-content img {
+  max-width: 100%;
+  margin: 15px 0;
+}
+.close-btn {
+  margin-top: 15px;
+  padding: 8px 20px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Grid: 4 items per row */
+.homepage-products-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  padding: 20px;
+}
+
+/* Responsive: 2 columns for smaller screens */
+@media (max-width: 1200px) {
+  .homepage-products-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (max-width: 900px) {
+  .homepage-products-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 600px) {
+  .homepage-products-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Card buttons layout */
+.card-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  justify-content: center;
+}
+
+/* Glass modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content.glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-radius: 15px;
+  padding: 25px;
+  max-width: 500px;
+  width: 90%;
+  color: #fff;
+  text-align: center;
+  box-shadow: 0 8px 32px 0 rgba(0,0,0,0.37);
+}
+
+.modal-content img {
+  max-width: 100%;
+  border-radius: 10px;
+  margin: 15px 0;
+}
+
+.close-btn {
+  margin-top: 15px;
+  padding: 10px 25px;
+  background-color: #ff4c4c;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Optional: glass card styling for products */
+.glass-card {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 15px;
+  text-align: center;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.home-page {
+  min-height: 100vh; /* full height */
+  background-image: url('https://w0.peakpx.com/wallpaper/1009/703/HD-wallpaper-fabric-abstract-pattern-fabric-textures-geometric-ornaments-fabric-patterns-fabric-backgrounds.jpg'); /* your background image URL */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: #fff; /* default text color for readability */
+  position: relative;
+  z-index: 1;
+}
+
+/* Optional: overlay to make text readable */
+.home-page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4); /* dark overlay for readability */
+  z-index: -1;
+}
+
+/* Ensure sections have relative z-index */
+.home-page section {
+  position: relative;
+  z-index: 2;
+  padding: 60px 20px;
+}
+
+/* Example hero section styling */
+.hero-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80vh; /* large hero */
+  text-align: center;
+}
+
+.hero-overlay {
+  padding: 20px;
+}
+
+.hero-btn {
+  margin-top: 20px;
+  padding: 12px 30px;
+  background-color: #ff7f50;
+  color: #fff;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.hero-btn:hover {
+  background-color: #ff5722;
+}
+
+/* Glass cards already have frosted glass effect, no changes needed */
+

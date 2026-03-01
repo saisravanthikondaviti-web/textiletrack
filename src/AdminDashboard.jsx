@@ -65,73 +65,84 @@ function AdminDashboard() {
     return () => unsubscribe();
   }, []);
 
-  return (
-    <div style={{ padding: 40 }}>
+ return (
+  <div className="admin-container">
+    <div className="admin-header">
       <h1>Admin Dashboard</h1>
 
-      <div style={{ display: "flex", gap: 20, marginTop: 20 }}>
-        <div style={{ border: "1px solid #ccc", padding: 20, borderRadius: 8 }}>
-          <h3>Total Textiles</h3>
-          <p>{stats.total}</p>
-        </div>
-
-        <div style={{ border: "1px solid #ccc", padding: 20, borderRadius: 8 }}>
-          <h3>Processing</h3>
-          <p>{stats.processing}</p>
-        </div>
-
-        <div style={{ border: "1px solid #ccc", padding: 20, borderRadius: 8 }}>
-          <h3>Completed</h3>
-          <p>{stats.completed}</p>
-        </div>
-      </div>
-
-      {/* ACTION BUTTONS */}
-      <div style={{ marginBottom: 20 }}>
-        <button onClick={() => (window.location.href = "/textiles")}>
-          Go to Textile Tracking
+      <div className="header-actions">
+        <button
+          className="nav-btn"
+          onClick={() => window.location.href = "/textiles"}
+        >
+          Textile Tracking
         </button>
 
-        <button onClick={handleLogout} style={{ marginLeft: 10 }}>
+        <button className="logout-btn" onClick={handleLogout}>
           Logout
         </button>
       </div>
-
-      <h2 style={{ marginTop: 30 }}>All Users</h2>
-
-      {users.map((user) => (
-        <div
-          key={user.id}
-          style={{
-            border: "1px solid #ccc",
-            padding: 12,
-            marginTop: 12,
-            borderRadius: 6,
-          }}
-        >
-          <p>
-            <b>Name:</b> {user.name}
-          </p>
-          <p>
-            <b>Email:</b> {user.email}
-          </p>
-          <p>
-            <b>Role:</b> {user.role}
-          </p>
-
-          {user.role === "user" ? (
-            <button onClick={() => changeRole(user.id, "admin")}>
-              Promote to Admin
-            </button>
-          ) : (
-            <button onClick={() => changeRole(user.id, "user")}>
-              Remove Admin
-            </button>
-          )}
-        </div>
-      ))}
     </div>
-  );
+
+    {/* ===== STATS CARDS ===== */}
+    <div className="stats-grid">
+      <div className="stat-card">
+        <h3>Total Orders</h3>
+        <p>{stats.total}</p>
+      </div>
+
+      <div className="stat-card">
+        <h3>Processing</h3>
+        <p>{stats.processing}</p>
+      </div>
+
+      <div className="stat-card">
+        <h3>Completed</h3>
+        <p>{stats.completed}</p>
+      </div>
+    </div>
+
+    {/* ===== USERS MANAGEMENT ===== */}
+    <div className="admin-card">
+      <h2>Users Management</h2>
+
+      <div className="users-table">
+        <div className="table-head">
+          <span>Name</span>
+          <span>Email</span>
+          <span>Role</span>
+          <span>Action</span>
+        </div>
+
+        {users.map((user) => (
+          <div key={user.id} className="table-row">
+            <span>{user.name}</span>
+            <span>{user.email}</span>
+            <span className={user.role === "admin" ? "role-admin" : "role-user"}>
+              {user.role}
+            </span>
+
+            {user.role === "user" ? (
+              <button
+                className="promote-btn"
+                onClick={() => changeRole(user.id, "admin")}
+              >
+                Promote
+              </button>
+            ) : (
+              <button
+                className="remove-btn"
+                onClick={() => changeRole(user.id, "user")}
+              >
+                Remove
+              </button>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+);
 }
 
 export default AdminDashboard;

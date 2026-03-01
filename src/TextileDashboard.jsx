@@ -40,7 +40,6 @@ function TextileDashboard() {
     await deleteDoc(doc(db, "textiles", id));
   };
 
-  // ✅ EXPORT FUNCTION (MUST BE HERE — NOT INSIDE JSX)
   const exportToExcel = () => {
     const data = textiles.map((item) => ({
       Title: item.title,
@@ -66,8 +65,10 @@ function TextileDashboard() {
   };
 
   const totalCount = textiles.length;
-  const processingCount = textiles.filter(t => t.status === "Processing").length;
-  const completedCount = textiles.filter(t => t.status === "Completed").length;
+  const processingCount = textiles.filter((t) => t.status === "Processing")
+    .length;
+  const completedCount = textiles.filter((t) => t.status === "Completed")
+    .length;
 
   // REAL-TIME LISTENER
   useEffect(() => {
@@ -110,30 +111,40 @@ function TextileDashboard() {
     <div className="container">
       <h1>Textile Tracking</h1>
 
-      <div style={{ marginBottom: 20 }}>
-        <button onClick={() => window.history.back()}>← Back</button>
-
-        <button onClick={handleLogout} style={{ marginLeft: 10 }}>
-          Logout
+      {/* ===== Top Bar ===== */}
+      <div className="top-bar">
+        <button className="top-btn" onClick={() => window.history.back()}>
+          ← Back
         </button>
 
-        {isAdmin && (
-          <button style={{ marginLeft: 10 }} onClick={() => setShowForm(!showForm)}>
-            + Add Textile
-          </button>
-        )}
+        <div className="top-bar-right">
+          {isAdmin && (
+            <>
+              <button
+                className="top-btn secondary"
+                onClick={() => setShowForm(!showForm)}
+              >
+                + Add Textile
+              </button>
 
-        {isAdmin && (
-          <button style={{ marginLeft: 10 }} onClick={exportToExcel}>
-            Export Excel
+              <button className="top-btn secondary" onClick={exportToExcel}>
+                Export Excel
+              </button>
+            </>
+          )}
+
+          <button className="top-btn danger" onClick={handleLogout}>
+            Logout
           </button>
-        )}
+        </div>
       </div>
 
+      {/* Add Textile Form */}
       {showForm && <AddTextile />}
 
+      {/* ===== Dashboard Cards ===== */}
       {isAdmin && (
-        <div style={{ display: "flex", gap: 20, marginBottom: 20 }}>
+        <div className="flex-container">
           <div className="card">
             <h3>Total Textiles</h3>
             <p>{totalCount}</p>
@@ -151,20 +162,15 @@ function TextileDashboard() {
         </div>
       )}
 
+      {/* ===== Search Bar ===== */}
       <input
         type="text"
         placeholder="Search by title, status, or location..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        style={{
-          padding: 8,
-          width: "320px",
-          marginBottom: 20,
-          borderRadius: 5,
-          border: "1px solid #ccc",
-        }}
       />
 
+      {/* ===== Textile Items ===== */}
       {textiles
         .filter(
           (item) =>
@@ -173,35 +179,38 @@ function TextileDashboard() {
             item.location?.toLowerCase().includes(search.toLowerCase())
         )
         .map((item) => (
-          <div
-            key={item.id}
-            style={{
-              border: "1px solid #ccc",
-              padding: 12,
-              marginTop: 12,
-              borderRadius: 6,
-            }}
-          >
-            <p><b>Title:</b> {item.title}</p>
-            <p><b>Status:</b> {item.status}</p>
-            <p><b>Location:</b> {item.location}</p>
-            <p><b>Updated By:</b> {item.updatedBy}</p>
+          <div key={item.id} className="textile-item">
+            <p>
+              <b>Title:</b> {item.title}
+            </p>
+            <p>
+              <b>Status:</b> {item.status}
+            </p>
+            <p>
+              <b>Location:</b> {item.location}
+            </p>
+            <p>
+              <b>Updated By:</b> {item.updatedBy}
+            </p>
 
             {isAdmin && (
               <div style={{ marginTop: 10 }}>
-                <button onClick={() => updateStatus(item.id, "Processing")}>
+                <button
+                  className="processing"
+                  onClick={() => updateStatus(item.id, "Processing")}
+                >
                   Processing
                 </button>
 
                 <button
-                  style={{ marginLeft: 8 }}
+                  className="completed"
                   onClick={() => updateStatus(item.id, "Completed")}
                 >
                   Completed
                 </button>
 
                 <button
-                  style={{ marginLeft: 8, background: "#ff4d4f", color: "white" }}
+                  className="danger"
                   onClick={() => deleteTextile(item.id)}
                 >
                   Delete

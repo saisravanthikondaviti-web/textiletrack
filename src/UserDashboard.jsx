@@ -1,18 +1,25 @@
-import { signOut } from "firebase/auth";
-import { auth } from "./firebase/config";
+import { useState } from "react";
+import TopBar from "./components/TopBar";
+import Sidebar from "./components/Sidebar";
+import Products from "./components/Products";
+import Cart from "./components/Cart";
+import Orders from "./components/Orders";
+import Profile from "./components/Profile";
+import "./styles.css";
 
 function UserDashboard() {
-
-  const handleLogout = async () => {
-    await signOut(auth);
-    window.location.href = "/";
-  };
+  const [activePage, setActivePage] = useState("home"); // home, cart, orders, profile
 
   return (
-    <div style={{ padding: 40 }}>
-      <h1>User Dashboard</h1>
-      <p>Welcome! You are logged in as USER.</p>
-      <button onClick={handleLogout}>Logout</button>
+    <div className="dashboard-container">
+      <Sidebar setActivePage={setActivePage} />
+      <div className="main-content">
+        <TopBar />
+        {activePage === "home" && <Products />}
+        {activePage === "cart" && <Cart />}
+        {activePage === "orders" && <Orders />}
+        {activePage === "profile" && <Profile />}
+      </div>
     </div>
   );
 }

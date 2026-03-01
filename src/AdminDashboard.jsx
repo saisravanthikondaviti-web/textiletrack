@@ -1,3 +1,4 @@
+// src/AdminDashboard.jsx
 import { useEffect, useState } from "react";
 import {
   collection,
@@ -8,6 +9,7 @@ import {
 import { signOut, onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { db, auth } from "./firebase/config";
+import "./styles.css"; // make sure inside src/
 
 function AdminDashboard() {
   const [users, setUsers] = useState([]);
@@ -19,31 +21,22 @@ function AdminDashboard() {
 
   const navigate = useNavigate();
 
-  // ✅ WAIT FOR AUTH FIRST
+  // Auth check
   useEffect(() => {
     const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
-      console.log("Auth User:", user);
-
       if (!user) {
-        navigate("/"); // redirect if not logged in
+        navigate("/");
         return;
       }
 
-      // ✅ FETCH USERS ONLY AFTER AUTH IS READY
       const unsubscribeUsers = onSnapshot(
         collection(db, "users"),
         (snapshot) => {
-          console.log("Snapshot size:", snapshot.size);
-
           const userList = snapshot.docs.map((doc) => ({
             id: doc.id,
             ...doc.data(),
           }));
-
           setUsers(userList);
-        },
-        (error) => {
-          console.error("Firestore error:", error);
         }
       );
 
@@ -53,33 +46,24 @@ function AdminDashboard() {
     return () => unsubscribeAuth();
   }, [navigate]);
 
-  // ✅ CHANGE ROLE
   const changeRole = async (id, newRole) => {
     try {
-      await updateDoc(doc(db, "users", id), {
-        role: newRole,
-      });
+      await updateDoc(doc(db, "users", id), { role: newRole });
     } catch (error) {
       alert("Error updating role: " + error.message);
     }
   };
 
-  // ✅ REALTIME TEXTILE STATS
+  // Textile stats
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, "textiles"), (snapshot) => {
       const list = snapshot.docs.map((doc) => doc.data());
-
-      const total = list.length;
-      const processing = list.filter(
-        (item) => item.status === "Processing"
-      ).length;
-      const completed = list.filter(
-        (item) => item.status === "Completed"
-      ).length;
-
-      setStats({ total, processing, completed });
+      setStats({
+        total: list.length,
+        processing: list.filter((i) => i.status === "Processing").length,
+        completed: list.filter((i) => i.status === "Completed").length,
+      });
     });
-
     return () => unsubscribe();
   }, []);
 
@@ -89,46 +73,39 @@ function AdminDashboard() {
   };
 
   return (
-    <div className="admin-container">
-      <div className="admin-header">
+    <div className="admin-container dark-mode">
+      {/* Header */}
+      <div className="admin-header glass">
         <h1>Admin Dashboard</h1>
-
         <div className="header-actions">
-          <button
-            className="nav-btn"
-            onClick={() => navigate("/textiles")}
-          >
+          <button className="nav-btn" onClick={() => navigate("/textiles")}>
             Textile Tracking
           </button>
-
           <button className="logout-btn" onClick={handleLogout}>
             Logout
           </button>
         </div>
       </div>
 
-      {/* ===== STATS ===== */}
+      {/* Stats */}
       <div className="stats-grid">
-        <div className="stat-card">
+        <div className="stat-card glass">
           <h3>Total Orders</h3>
           <p>{stats.total}</p>
         </div>
-
-        <div className="stat-card">
+        <div className="stat-card glass">
           <h3>Processing</h3>
           <p>{stats.processing}</p>
         </div>
-
-        <div className="stat-card">
+        <div className="stat-card glass">
           <h3>Completed</h3>
           <p>{stats.completed}</p>
         </div>
       </div>
 
-      {/* ===== USERS ===== */}
-      <div className="admin-card">
+      {/* Users */}
+      <div className="admin-card glass">
         <h2>Users Management</h2>
-
         <div className="users-table">
           <div className="table-head">
             <span>Name</span>
@@ -137,35 +114,21 @@ function AdminDashboard() {
             <span>Action</span>
           </div>
 
-          {users.length === 0 && (
-            <p style={{ padding: "10px" }}>No users found</p>
-          )}
+          {users.length === 0 && <p style={{ padding: "10px" }}>No users found</p>}
 
           {users.map((user) => (
             <div key={user.id} className="table-row">
               <span>{user.name || "—"}</span>
               <span>{user.email}</span>
-
-              <span
-                className={
-                  user.role === "admin" ? "role-admin" : "role-user"
-                }
-              >
+              <span className={user.role === "admin" ? "role-admin" : "role-user"}>
                 {user.role}
               </span>
-
               {user.role === "user" ? (
-                <button
-                  className="promote-btn"
-                  onClick={() => changeRole(user.id, "admin")}
-                >
+                <button className="promote-btn" onClick={() => changeRole(user.id, "admin")}>
                   Promote
                 </button>
               ) : (
-                <button
-                  className="remove-btn"
-                  onClick={() => changeRole(user.id, "user")}
-                >
+                <button className="remove-btn" onClick={() => changeRole(user.id, "user")}>
                   Remove
                 </button>
               )}

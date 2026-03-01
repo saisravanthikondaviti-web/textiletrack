@@ -3,6 +3,7 @@ import { collection, onSnapshot } from "firebase/firestore";
 import { db } from "../firebase/config";
 import { useCart } from "../context/CartContext";
 import { Link } from "react-router-dom";
+import "../styles.css";
 
 export default function ProductsPage() {
   const [products, setProducts] = useState([]);
@@ -18,97 +19,41 @@ export default function ProductsPage() {
   }, []);
 
   return (
-    <div style={{ padding: "20px" }}>
-      {/* Header: Profile, Orders, Cart */}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          position: "sticky",
-          top: 0,
-          backgroundColor: "white",
-          padding: "10px 0",
-          zIndex: 100,
-          borderBottom: "1px solid #ccc",
-        }}
-      >
-        <h2>Products</h2>
-        <div style={{ display: "flex", gap: "15px" }}>
-          <Link
-            to="/user/profile"
-            style={{
-              textDecoration: "none",
-              color: "#007bff",
-              fontWeight: "bold",
-            }}
-          >
-            Profile
-          </Link>
-          <Link
-            to="/user/orders"
-            style={{
-              textDecoration: "none",
-              color: "#007bff",
-              fontWeight: "bold",
-            }}
-          >
-            Orders
-          </Link>
-          <Link
-            to="/user/cart"
-            style={{
-              textDecoration: "none",
-              color: "white",
-              backgroundColor: "#007bff",
-              padding: "8px 12px",
-              borderRadius: "4px",
-            }}
-          >
-            Cart ({cart.length})
-          </Link>
-        </div>
+    <div className="homepage-style">
+      {/* Hero-like Header */}
+      <div className="products-hero">
+        <h1>Explore Our Textiles Across India</h1>
+        <p>Traditional, authentic, and handcrafted fabrics for every style.</p>
+      </div>
+
+      {/* Sticky Header Links */}
+      <div className="products-links-glass">
+        <Link to="/user/profile" className="link-btn-glass">
+          Profile
+        </Link>
+        <Link to="/user/orders" className="link-btn-glass">
+          Orders
+        </Link>
+        <Link to="/user/cart" className="cart-btn-glass">
+          Cart ({cart.length})
+        </Link>
       </div>
 
       {/* Products Grid */}
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          gap: "20px",
-          marginTop: "20px",
-        }}
-      >
+      <div className="homepage-products-grid">
         {products.map((p) => (
-          <div
-            key={p.id}
-            style={{
-              border: "1px solid #ccc",
-              padding: "10px",
-              width: "200px",
-              borderRadius: "8px",
-            }}
-          >
-            <img
-              src={p.imageURL}
-              alt={p.title}
-              style={{ width: "100%", height: "150px", objectFit: "cover" }}
-            />
+          <div className="glass-card" key={p.id}>
+            <img src={p.imageURL} alt={p.title} />
             <h4>{p.title}</h4>
             <p>{p.description}</p>
-            <p>Price: ${p.price}</p>
-            <p>Stock: {p.stock}</p>
+            <p className="price-stock">
+              <span>Price: ${p.price}</span>
+              <span>Stock: {p.stock}</span>
+            </p>
             <button
               disabled={p.stock === 0}
               onClick={() => addToCart(p)}
-              style={{
-                padding: "8px 12px",
-                backgroundColor: p.stock === 0 ? "#ccc" : "#007bff",
-                color: "white",
-                border: "none",
-                borderRadius: "4px",
-                cursor: p.stock === 0 ? "not-allowed" : "pointer",
-              }}
+              className={`add-btn ${p.stock === 0 ? "disabled-btn" : ""}`}
             >
               {p.stock === 0 ? "Out of Stock" : "Add to Cart"}
             </button>

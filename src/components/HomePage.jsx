@@ -1,87 +1,135 @@
-import React, { useEffect, useState } from "react";
-import { db } from "../firebase/config";
-import { doc, getDoc } from "firebase/firestore";
+// src/components/HomePage.jsx
+import React from "react";
+import { Link } from "react-router-dom";
+import "../styles.css";
 
 export default function HomePage() {
-  const [contact, setContact] = useState({ email: "", phone: "", address: "" });
+  const featuredTextiles = [
+    {
+      name: "Kanchipuram Silk",
+      image:
+        "https://i.pinimg.com/474x/8a/23/e5/8a23e5b45c22b1ebcef3347670a7bb7c.jpg",
+    },
+    {
+      name: "Banarasi Brocade",
+      image:
+        "https://akrithi.com/cdn/shop/files/IMG_1205.jpg?v=1725695680&width=2000",
+    },
+    {
+      name: "Chanderi Cotton",
+      image:
+        "https://www.sarojfabrics.com/pub/media/catalog/product/cache/e461f6a7c3abe4058405e5b51e40efd3/s/f/sf20616d.jpg",
+    },
+    {
+      name: "Phulkari Embroidery",
+      image:
+        "https://chhotisiasha.org/cdn/shop/files/IMG_1875_8e79c743-1178-4236-8426-9bd788e89ed7.jpg?crop=center&height=2048&v=1684566948&width=2048",
+    },
+  ];
 
-  // Fetch contact info from Firestore
-  useEffect(() => {
-    const fetchContact = async () => {
-      const ref = doc(db, "appInfo", "contact"); // Firestore: collection "appInfo", doc "contact"
-      const snap = await getDoc(ref);
-      if (snap.exists()) setContact(snap.data());
-    };
-    fetchContact();
-  }, []);
+  const aboutCards = [
+    {
+      title: "Discover Regional Textiles",
+      desc: "Explore traditional textiles from every state of India – silks, handlooms, and cottons.",
+    },
+    {
+      title: "Manage Your Cart",
+      desc: "Add your favorite textiles to your cart and keep track of your selections easily.",
+    },
+    {
+      title: "Track Orders & Delivery",
+      desc: "Know when your precious textiles arrive safely at your doorstep.",
+    },
+  ];
 
   return (
-    <div>
+    <div className="home-page">
       {/* Hero Section */}
-      <section
-        style={{
-          height: "400px",
-          background: "url('https://source.unsplash.com/1600x400/?textile') center/cover no-repeat",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          color: "white",
-          textAlign: "center",
-          flexDirection: "column",
-        }}
-      >
-        <h1>Welcome to TextileTrack</h1>
-        <p>Empowering your textile experience with ease and innovation</p>
-        <a
-          href="/user/products"
-          style={{
-            marginTop: "20px",
-            padding: "10px 20px",
-            backgroundColor: "#007bff",
-            color: "white",
-            borderRadius: "5px",
-            textDecoration: "none",
-          }}
-        >
-          Explore Products
-        </a>
+      <section className="hero-section">
+        <div className="hero-overlay">
+          <div className="hero-content">
+            <h1>Explore India’s Finest Textiles</h1>
+            <p>
+              From Kanchipuram silks to Banarasi brocades, discover, shop, and
+              manage your textile collections seamlessly.
+            </p>
+            <Link to="/user/products" className="hero-btn">
+              Browse Textiles
+            </Link>
+          </div>
+        </div>
       </section>
 
       {/* About Section */}
-      <section style={{ padding: "50px 20px", backgroundColor: "#f9f9f9" }}>
-        <h2>About TextileTrack</h2>
-        <p>
-          Our mission is to simplify the textile industry by providing a digital
-          platform for products, orders, and seamless user experience.  
-          We connect manufacturers, retailers, and users in one place.
-        </p>
+      <section className="about-section">
+        <h2>About TextileTrack India</h2>
+        <div className="about-cards">
+          {aboutCards.map((card, i) => (
+            <div className="glass-card" key={i}>
+              <h3>{card.title}</h3>
+              <p>{card.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Featured Section */}
+      <section className="featured-section">
+        <h2>Featured Textiles Across India</h2>
+        <div className="featured-cards">
+          {featuredTextiles.map((textile, i) => (
+            <div className="glass-card featured-card" key={i}>
+              <img src={textile.image} alt={textile.name} />
+              <h4>{textile.name}</h4>
+              <p>Authentic, traditional Indian textile</p>
+              <button className="view-btn">View</button>
+            </div>
+          ))}
+        </div>
       </section>
 
       {/* FAQ Section */}
-      <section style={{ padding: "50px 20px" }}>
+      <section className="faq-section">
         <h2>Frequently Asked Questions</h2>
-        <div>
-          <details style={{ marginBottom: "10px" }}>
-            <summary>How do I place an order?</summary>
-            <p>Add products to your cart, go to checkout, and place the order.</p>
-          </details>
-          <details style={{ marginBottom: "10px" }}>
-            <summary>Can I track my order?</summary>
-            <p>Yes! You can see all your orders in the Orders page.</p>
-          </details>
-          <details style={{ marginBottom: "10px" }}>
-            <summary>How can I contact support?</summary>
-            <p>Use the contact section below to reach out to us directly.</p>
-          </details>
+        <div className="faq-container">
+          <div className="faq-card">
+            <h3>How do I order regional textiles?</h3>
+            <p>
+              Browse the featured textiles, add to cart, and checkout easily.
+            </p>
+          </div>
+          <div className="faq-card">
+            <h3>Do you deliver nationwide?</h3>
+            <p>
+              Yes! We deliver authentic Indian textiles across all states in India.
+            </p>
+          </div>
+          <div className="faq-card">
+            <h3>Are the textiles authentic?</h3>
+            <p>
+              All our products are sourced directly from certified local artisans and weavers.
+            </p>
+          </div>
         </div>
       </section>
 
       {/* Contact Section */}
-      <section style={{ padding: "50px 20px", backgroundColor: "#f9f9f9" }}>
+      <section className="contact-section">
         <h2>Contact Us</h2>
-        <p>Email: {contact.email}</p>
-        <p>Phone: {contact.phone}</p>
-        <p>Address: {contact.address}</p>
+        <div className="contact-cards">
+          <div className="contact-card">
+            <h3>Email</h3>
+            <p>support@textiletrack.in</p>
+          </div>
+          <div className="contact-card">
+            <h3>Phone</h3>
+            <p>+91 98765 43210</p>
+          </div>
+          <div className="contact-card">
+            <h3>Address</h3>
+            <p>123 Textile Street, India</p>
+          </div>
+        </div>
       </section>
     </div>
   );

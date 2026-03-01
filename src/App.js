@@ -1,4 +1,3 @@
-// App.js
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "./firebase/config";
@@ -17,7 +16,7 @@ import Checkout from "./components/Checkout";
 import OrdersPage from "./components/OrdersPage";
 import ProfilePage from "./components/ProfilePage";
 
-// ✅ Cart Context
+// Cart Context
 import { CartProvider } from "./context/CartContext";
 
 function App() {
@@ -31,14 +30,13 @@ function App() {
         const ref = doc(db, "users", u.uid);
         const snap = await getDoc(ref);
         setUser(u);
-        setRole(snap.data().role);
+        setRole(snap.data()?.role);
       } else {
         setUser(null);
         setRole(null);
       }
       setLoading(false);
     });
-
     return unsubscribe;
   }, []);
 
@@ -54,7 +52,7 @@ function App() {
             element={!user ? <Login /> : <Navigate to={`/${role}`} />}
           />
 
-          {/* Admin Dashboard */}
+          {/* Admin */}
           <Route
             path="/admin"
             element={
@@ -62,24 +60,23 @@ function App() {
             }
           />
 
-          {/* Textile Dashboard */}
+          {/* Textile */}
           <Route path="/textiles" element={<TextileDashboard />} />
 
-          {/* User Dashboard */}
+          {/* User dashboard with nested routes */}
           <Route
-            path="/user"
+            path="/user/*"
             element={user && role === "user" ? <UserDashboard /> : <Navigate to="/" />}
           >
-            {/* Nested User Routes */}
-            <Route index element={<HomePage />} /> {/* /user */}
-            <Route path="products" element={<ProductsPage />} /> {/* /user/products */}
-            <Route path="cart" element={<CartPage />} /> {/* /user/cart */}
-            <Route path="checkout" element={<Checkout />} /> {/* /user/checkout */}
-            <Route path="orders" element={<OrdersPage />} /> {/* /user/orders */}
-            <Route path="profile" element={<ProfilePage />} /> {/* /user/profile */}
+            <Route index element={<HomePage />} />             {/* /user */}
+            <Route path="products" element={<ProductsPage />} />  {/* /user/products */}
+            <Route path="cart" element={<CartPage />} />           {/* /user/cart */}
+            <Route path="checkout" element={<Checkout />} />       {/* /user/checkout */}
+            <Route path="orders" element={<OrdersPage />} />       {/* /user/orders */}
+            <Route path="profile" element={<ProfilePage />} />     {/* /user/profile */}
           </Route>
 
-          {/* Fallback */}
+          {/* fallback */}
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </BrowserRouter>

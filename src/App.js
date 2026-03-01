@@ -1,13 +1,24 @@
+// App.js
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "./firebase/config";
 import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 
+// Pages
 import Login from "./Login";
 import UserDashboard from "./UserDashboard";
 import AdminDashboard from "./AdminDashboard";
 import TextileDashboard from "./TextileDashboard";
+import HomePage from "./components/HomePage";
+import ProductsPage from "./components/ProductsPage";
+import CartPage from "./components/CartPage";
+import Checkout from "./components/Checkout";
+import OrdersPage from "./components/OrdersPage";
+import ProfilePage from "./components/ProfilePage";
+
+// ✅ Cart Context
+import { CartProvider } from "./context/CartContext";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -34,30 +45,45 @@ function App() {
   if (loading) return <h2>Loading...</h2>;
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route
-          path="/"
-          element={!user ? <Login /> : <Navigate to={`/${role}`} />}
-        />
+    <CartProvider>
+      <BrowserRouter>
+        <Routes>
+          {/* Login / redirect */}
+          <Route
+            path="/"
+            element={!user ? <Login /> : <Navigate to={`/${role}`} />}
+          />
 
-        <Route
-          path="/admin"
-          element={
-            user && role === "admin" ? <AdminDashboard /> : <Navigate to="/" />
-          }
-        />
+          {/* Admin Dashboard */}
+          <Route
+            path="/admin"
+            element={
+              user && role === "admin" ? <AdminDashboard /> : <Navigate to="/" />
+            }
+          />
 
-        <Route
-          path="/user"
-          element={
-            user && role === "user" ? <UserDashboard /> : <Navigate to="/" />
-          }
-        />
+          {/* Textile Dashboard */}
+          <Route path="/textiles" element={<TextileDashboard />} />
 
-        <Route path="/textiles" element={<TextileDashboard />} />
-      </Routes>
-    </BrowserRouter>
+          {/* User Dashboard */}
+          <Route
+            path="/user"
+            element={user && role === "user" ? <UserDashboard /> : <Navigate to="/" />}
+          >
+            {/* Nested User Routes */}
+            <Route index element={<HomePage />} /> {/* /user */}
+            <Route path="products" element={<ProductsPage />} /> {/* /user/products */}
+            <Route path="cart" element={<CartPage />} /> {/* /user/cart */}
+            <Route path="checkout" element={<Checkout />} /> {/* /user/checkout */}
+            <Route path="orders" element={<OrdersPage />} /> {/* /user/orders */}
+            <Route path="profile" element={<ProfilePage />} /> {/* /user/profile */}
+          </Route>
+
+          {/* Fallback */}
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </BrowserRouter>
+    </CartProvider>
   );
 }
 

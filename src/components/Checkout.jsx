@@ -3,16 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db, auth } from "../firebase/config";
 import { useCart } from "../context/CartContext";
-import "../styles/checkout.css";
 
 const Checkout = () => {
-  const { cartItems = [], clearCart } = useCart();
+  const { cart, clearCart } = useCart();
   const navigate = useNavigate();
 
-  // Calculate total
-  const totalAmount = cartItems.reduce(
+  const totalAmount = cart.reduce(
     (acc, item) => acc + item.price * item.quantity,
-    0
+    0,
   );
 
   const handlePlaceOrder = async () => {
@@ -24,7 +22,7 @@ const Checkout = () => {
         return;
       }
 
-      if (cartItems.length === 0) {
+      if (cart.length === 0) {
         alert("Your cart is empty!");
         return;
       }
@@ -32,7 +30,7 @@ const Checkout = () => {
       await addDoc(collection(db, "orders"), {
         userId: user.uid,
         email: user.email,
-        items: cartItems,
+        items: cart,
         total: totalAmount,
         status: "Processing",
         createdAt: serverTimestamp(),
@@ -40,39 +38,34 @@ const Checkout = () => {
 
       alert("Order placed successfully ✅");
 
-      clearCart(); // clear cart after order
+      clearCart();
 
-      navigate("/user/orders"); // redirect to orders page
+      navigate("/user/orders");
     } catch (error) {
-      console.error("Error placing order:", error);
-      alert("Something went wrong!");
+      console.error("FULL ERROR:", error);
+      alert(error.message);
     }
   };
 
   return (
-    <div className="checkout-container">
-      <h2>🛍 Checkout</h2>
+    <div style={{ padding: "40px" }}>
+      <h2>Checkout</h2>
 
-      {cartItems.length === 0 ? (
+      {cart.length === 0 ? (
         <p>Your cart is empty.</p>
       ) : (
         <>
-          <div className="checkout-items">
-            {cartItems.map((item) => (
-              <div key={item.id} className="checkout-item">
-                <p>{item.title}</p>
-                <p>
-                  ₹{item.price} × {item.quantity}
-                </p>
-              </div>
-            ))}
-          </div>
+          {cart.map((item) => (
+            <div key={item.id} style={{ marginBottom: "10px" }}>
+              <p>
+                {item.title} — ₹{item.price} × {item.quantity}
+              </p>
+            </div>
+          ))}
 
           <h3>Total: ₹{totalAmount}</h3>
 
-          <button className="place-order-btn" onClick={handlePlaceOrder}>
-            Place Order
-          </button>
+          <button onClick={handlePlaceOrder}>Place Order</button>
         </>
       )}
     </div>
